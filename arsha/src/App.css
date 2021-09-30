@@ -17,6 +17,24 @@ body {
 
 .sideBar {
 	width: 30%;
-	border: solid 3px black;
+	border: solid 0px black;
 	box-sizing: border-box;
+}
+
+#searchBar {
+	width: 70%;
+}
+
+#searchButton {
+	width: 20%;
+}
+
+#searchImage {
+	width: 12px;
+}
+
+#google-signin {
+	position: absolute;
+	top: 0px;
+	right: 0px;
 }
