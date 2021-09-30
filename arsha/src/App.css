@@ -1,0 +1,22 @@
+body {
+	background-color: rgb(38, 42, 65);
+	color: rgb(149, 196, 117);
+	font-family: "Open Sans", sans-serif;
+	text-align: center;
+}
+
+.mainPage {
+	display: flex;
+}
+
+.mainContent {
+	width: 70%;
+	border: solid 3px black;
+	box-sizing: border-box;
+}
+
+.sideBar {
+	width: 30%;
+	border: solid 3px black;
+	box-sizing: border-box;
+}
