@@ -3,7 +3,6 @@ import "firebase/auth";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { collection, doc, setDoc } from "firebase/firestore";
-import { unstable_concurrentAct } from "react-dom/test-utils";
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_API_KEY,
@@ -21,10 +20,14 @@ export const auth = getAuth();
 export const provider = new GoogleAuthProvider();
 const db = getFirestore();
 
-export async function createReview(userID) {
-	const usersRef = collection(db, "users");
-
-	await setDoc(doc(usersRef, userID), {
-		creationDate: new Date(),
+export async function createReview(title, creator, rating) {
+	const userID = auth.currentUser;
+	console.log(userID);
+	const reveiwCol = db.collection("users").doc(userID).collection("reviews");
+	await setDoc(reveiwCol, {
+		userID: userID,
+		title: title,
+		creator: creator,
+		rating: rating,
 	});
 }

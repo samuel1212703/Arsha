@@ -1,70 +1,53 @@
 import "./App.css";
-import React from "react";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth, provider } from "./firebase/config";
+import React, { useState } from "react";
+import { signInWithPopup, signOut } from "firebase/auth";
+import { auth, provider, createReview } from "./firebase/config";
 import GoogleButton from "react-google-button";
 
-const UploadAndDisplayImage = () => {
-	const [selectedImage, setSelectedImage] = useState(null);
-
-	return (
-		<div>
-			<h1>Upload and Display Image usign React Hook's</h1>
-			{selectedImage && (
-				<div>
-					<img
-						alt="not fount"
-						width={"250px"}
-						src={URL.createObjectURL(selectedImage)}
-					/>
-					<br />
-					<button onClick={() => setSelectedImage(null)}>Remove</button>
-				</div>
-			)}
-			<br />
-
-			<br />
-			<input
-				type="file"
-				name="myImage"
-				onChange={(event) => {
-					console.log(event.target.files[0]);
-					setSelectedImage(event.target.files[0]);
-				}}
-			/>
-		</div>
-	);
-};
-
-function signinPopup(auth, provider) {
+function signinPopup(auth, provider, setLoggedIn) {
 	signInWithPopup(auth, provider)
 		.then((result) => {
-			// This gives you a Google Access Token. You can use it to access the Google API.
-			const credential = GoogleAuthProvider.credentialFromResult(result);
-			const token = credential.accessToken;
-			// The signed-in user info.
-			const user = result.user;
+			setLoggedIn(true);
+			console.log(auth);
+		})
+		.catch((error) => {});
+}
+
+function signout(auth, setLoggedIn) {
+	signOut(auth)
+		.then(() => {
+			console.log(auth);
+			// Sign-out successful.
+			console.log("signed out");
+			setLoggedIn(false);
 		})
 		.catch((error) => {
-			// Handle Errors here.
-			const errorCode = error.code;
-			const errorMessage = error.message;
-			// The email of the user's account used.
-			const email = error.email;
-			// The AuthCredential type that was used.
-			const credential = GoogleAuthProvider.credentialFromError(error);
-			// ...
+			// An error happened.
 		});
 }
 
 function App() {
+	const [loggedIn, setLoggedIn] = useState(false);
+	const [selectedImage, setSelectedImage] = useState(null);
+	const [title, setTitle] = useState(null);
+	const [creator, setCreator] = useState(null);
+	const [rating, setRating] = useState(null);
+
 	return (
 		<div className="App">
 			<h1>Arsha</h1>
-			<GoogleButton
-				id="google-signin"
-				onClick={() => signinPopup(auth, provider)}
-			/>
+			{loggedIn ? (
+				<div>
+					<p>{auth.currentUser.displayName}</p>
+					<button onClick={() => signout(auth, setLoggedIn)}>Sign out</button>
+				</div>
+			) : (
+				<GoogleButton
+					id="google-signin"
+					onClick={() => signinPopup(auth, provider, setLoggedIn)}
+				/>
+			)}
+
 			<div className="mainPage">
 				<div className="sideBar">
 					<input
@@ -76,7 +59,64 @@ function App() {
 						<img id="searchImage" src="images/search-icon.png" />
 					</button>
 				</div>
-				<div className="mainContent"></div>
+				<div className="mainContent">
+					<div id="reviewImageContainer">
+						<div>
+							{selectedImage && (
+								<div>
+									<img
+										id="reviewImage"
+										alt="Review Image"
+										width={"250px"}
+										src={URL.createObjectURL(selectedImage)}
+									/>
+									<button onClick={() => setSelectedImage(null)}>Remove</button>
+								</div>
+							)}
+							<input
+								type="file"
+								name="myImage"
+								onChange={(event) => {
+									setSelectedImage(event.target.files[0]);
+								}}
+							/>
+						</div>
+					</div>
+					<div id="reviewTextContainer">
+						<form>
+							<p>Title</p>
+							<input
+								type="text"
+								id="title"
+								name="title"
+								onChange={(event) => setTitle(event.target.value)}
+							></input>
+							<p>Creator</p>
+							<input
+								type="text"
+								id="creator"
+								name="creator"
+								onChange={(event) => setCreator(event.target.value)}
+							></input>
+							<p>Rating</p>
+							<input
+								type="number"
+								id="rating"
+								name="rating"
+								onChange={(event) => setRating(event.target.value)}
+							></input>
+							<div id="reviewBottom">
+								<button
+									type="submit"
+									id="submit-button"
+									onClick={() => createReview(title, creator, rating)}
+								>
+									Submit Review!
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
 	);
