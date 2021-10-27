@@ -1,0 +1,53 @@
+{
+  "user": {
+    "uid": "7SPkq1tBinaSptA7mHTbfSl3d8B3",
+    "email": "playche4600@gmail.com",
+    "emailVerified": true,
+    "displayName": "Samuel Jakobsen",
+    "isAnonymous": false,
+    "photoURL": "https://lh3.googleusercontent.com/a/AATXAJxDmNqBxcOtXpWU61uxw6VZVUMEuMNssrFiY8tz=s96-c",
+    "providerData": [
+      {
+        "providerId": "google.com",
+        "uid": "117838276668531477123",
+        "displayName": "Samuel Jakobsen",
+        "email": "playche4600@gmail.com",
+        "phoneNumber": null,
+        "photoURL": "https://lh3.googleusercontent.com/a/AATXAJxDmNqBxcOtXpWU61uxw6VZVUMEuMNssrFiY8tz=s96-c"
+      }
+    ],
+    "stsTokenManager": {
+      "refreshToken": "AFxQ4_rWt0Yn_ND9GM8UXf1MLi-B3ezzsedidiTMY_W6uqBDiZxvMFwEMGAz6bbsH5lZpep1AM6qZnUaf3l2MEm4-zgE0QPViSIWPZEAHUiKI0ko2Fi3LHm1_wMU1c9oAXJWdw7QxjX0JphIhmPSrWGYk6x1dsc32yjdHQDT8hdFIKhKwhZkDTwkgqeTBvho935R22uqXaLwc9M0tquqqGUXiRGmSIEpS6xEC2Rmok8-nE-VHTEpmvJhHlWMo-bJGCLl8JrgGWSzr23F8969mehU_DhhDbfDp1gmPmiipNg4_YNMJv3LZUGbYqGL5Fesj4q0Vu_bhgtXhj3FdVUFxsSf_MZ6ZYtk9CGUVsFsdLxzZBcfz5mudwoAicIV5n9IBTmd79-slKa1ywheTyf--d0awdyLtJPsLsufwup3bv-eOBPujJSsQnQ",
+      "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE1MjU1NWEyMjM3MWYxMGY0ZTIyZjFhY2U3NjJmYzUwZmYzYmVlMGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiU2FtdWVsIEpha29ic2VuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnhEbU5xQnhjT3RYcFdVNjF1eHc2VlpWVU1FdU1Oc3NyRmlZOHR6PXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2Fyc2hhLWYwYWQzIiwiYXVkIjoiYXJzaGEtZjBhZDMiLCJhdXRoX3RpbWUiOjE2MzUzNTE5MDIsInVzZXJfaWQiOiI3U1BrcTF0QmluYVNwdEE3bUhUYmZTbDNkOEIzIiwic3ViIjoiN1NQa3ExdEJpbmFTcHRBN21IVGJmU2wzZDhCMyIsImlhdCI6MTYzNTM1MTkwMiwiZXhwIjoxNjM1MzU1NTAyLCJlbWFpbCI6InBsYXljaGU0NjAwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTE3ODM4Mjc2NjY4NTMxNDc3MTIzIl0sImVtYWlsIjpbInBsYXljaGU0NjAwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.bN6T-btGQW6k2-RVHjd1SEq4522zEVvRmE5frmJQyf5ovMn6WWSor92cXqS4dAzshdOTdhMeYVdw8DV63yjfjnoObPq286eTvOwDy32d_aoOlrGyEFfzS1MShqou0GjLwa7YSzQpaJ_9CoG5PiQxNsZMKxmy99sDA-bIYqQNdQOck3rYNLqatIviPghbs-hXmTXWy9goZZuEWFxvQKbxvJGq4FHMSYe7Fur6m8ReSRWhSrBHG7I91EX_yMpqp-M4a2CZ9q7TefEXaEGAr4eIOiZntMf1Q0Bo3IlNuFJwgLTMwGA486r_RK8W_q04fK4U_BaMT0QdXx12723-F_ASsg",
+      "expirationTime": 1635355501939
+    },
+    "createdAt": "1635351902382",
+    "lastLoginAt": "1635351902383",
+    "apiKey": "AIzaSyAhRNSY_EHv5WVbTnsIHSDrSx4e1wuWvCk",
+    "appName": "[DEFAULT]"
+  },
+  "providerId": "google.com",
+  "_tokenResponse": {
+    "federatedId": "https://accounts.google.com/117838276668531477123",
+    "providerId": "google.com",
+    "email": "playche4600@gmail.com",
+    "emailVerified": true,
+    "firstName": "Samuel",
+    "fullName": "Samuel Jakobsen",
+    "lastName": "Jakobsen",
+    "photoUrl": "https://lh3.googleusercontent.com/a/AATXAJxDmNqBxcOtXpWU61uxw6VZVUMEuMNssrFiY8tz=s96-c",
+    "localId": "7SPkq1tBinaSptA7mHTbfSl3d8B3",
+    "displayName": "Samuel Jakobsen",
+    "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE1MjU1NWEyMjM3MWYxMGY0ZTIyZjFhY2U3NjJmYzUwZmYzYmVlMGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiU2FtdWVsIEpha29ic2VuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnhEbU5xQnhjT3RYcFdVNjF1eHc2VlpWVU1FdU1Oc3NyRmlZOHR6PXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2Fyc2hhLWYwYWQzIiwiYXVkIjoiYXJzaGEtZjBhZDMiLCJhdXRoX3RpbWUiOjE2MzUzNTE5MDIsInVzZXJfaWQiOiI3U1BrcTF0QmluYVNwdEE3bUhUYmZTbDNkOEIzIiwic3ViIjoiN1NQa3ExdEJpbmFTcHRBN21IVGJmU2wzZDhCMyIsImlhdCI6MTYzNTM1MTkwMiwiZXhwIjoxNjM1MzU1NTAyLCJlbWFpbCI6InBsYXljaGU0NjAwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTE3ODM4Mjc2NjY4NTMxNDc3MTIzIl0sImVtYWlsIjpbInBsYXljaGU0NjAwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.bN6T-btGQW6k2-RVHjd1SEq4522zEVvRmE5frmJQyf5ovMn6WWSor92cXqS4dAzshdOTdhMeYVdw8DV63yjfjnoObPq286eTvOwDy32d_aoOlrGyEFfzS1MShqou0GjLwa7YSzQpaJ_9CoG5PiQxNsZMKxmy99sDA-bIYqQNdQOck3rYNLqatIviPghbs-hXmTXWy9goZZuEWFxvQKbxvJGq4FHMSYe7Fur6m8ReSRWhSrBHG7I91EX_yMpqp-M4a2CZ9q7TefEXaEGAr4eIOiZntMf1Q0Bo3IlNuFJwgLTMwGA486r_RK8W_q04fK4U_BaMT0QdXx12723-F_ASsg",
+    "context": "",
+    "oauthAccessToken": "ya29.a0ARrdaM-u8G1oTd0h_gTgrEEPso065PnpAUky9sAjfeobCC0zuG6QSkM-Qsl6u2zjO0pP8YvU0chGjCmri6gtcrgwb4xQ8z2LHMLx12m2-_XYl3siGZ7CZbS8eHus6rmKik0hbyeAo6QqCSWOOcz4OijB1vHO",
+    "oauthExpireIn": 3599,
+    "refreshToken": "AFxQ4_rWt0Yn_ND9GM8UXf1MLi-B3ezzsedidiTMY_W6uqBDiZxvMFwEMGAz6bbsH5lZpep1AM6qZnUaf3l2MEm4-zgE0QPViSIWPZEAHUiKI0ko2Fi3LHm1_wMU1c9oAXJWdw7QxjX0JphIhmPSrWGYk6x1dsc32yjdHQDT8hdFIKhKwhZkDTwkgqeTBvho935R22uqXaLwc9M0tquqqGUXiRGmSIEpS6xEC2Rmok8-nE-VHTEpmvJhHlWMo-bJGCLl8JrgGWSzr23F8969mehU_DhhDbfDp1gmPmiipNg4_YNMJv3LZUGbYqGL5Fesj4q0Vu_bhgtXhj3FdVUFxsSf_MZ6ZYtk9CGUVsFsdLxzZBcfz5mudwoAicIV5n9IBTmd79-slKa1ywheTyf--d0awdyLtJPsLsufwup3bv-eOBPujJSsQnQ",
+    "expiresIn": "3600",
+    "oauthIdToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImJiZDJhYzdjNGM1ZWI4YWRjOGVlZmZiYzhmNWEyZGQ2Y2Y3NTQ1ZTQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMTA1Njg5OTE1ODE4OC0wMDJsM21oYWlzb2Jqa2E4MWl0Z2lrMTlwMmxmdm90YS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjEwNTY4OTkxNTgxODgtMDAybDNtaGFpc29iamthODFpdGdpazE5cDJsZnZvdGEuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTc4MzgyNzY2Njg1MzE0NzcxMjMiLCJlbWFpbCI6InBsYXljaGU0NjAwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiVDBVT21kajNaNjhyWFhNU0l0UVZOUSIsImlhdCI6MTYzNTM1MTkwMiwiZXhwIjoxNjM1MzU1NTAyfQ.imWiD3P-8AzsbCB95lsDZyFI3amQ3abSy1iuVBn8pe-OdIIKvIBYi0etfDu5ainGvPkGHaxsIoBr-b3S3uQM1i3XbXkCXTPuD9dUGKTcBR2yP3wJGoKOcEF7bTaqdtsw__BfZGSDBwSBDk3jNgAFJLQzr0kfzSGRJj9xricvlQZjUiZH04kJLuJFm66V4Cx_en8868kos_becVw17Roo7sJKB0ZU__c4Sw9SJXaKuu_wZvTvn990tilGJBSyAK6EGg5kISluKQhNbfexD_J18RBGtF4ocCLeMSlR86PiK6aluGOQP1lIdNlkU1MD1XAwLD1O0MFP1K1Otvi8nVUNzg",
+    "rawUserInfo": "{\"name\":\"Samuel Jakobsen\",\"granted_scopes\":\"https://www.googleapis.com/auth/userinfo.email openid https://www.googleapis.com/auth/userinfo.profile\",\"id\":\"117838276668531477123\",\"verified_email\":true,\"given_name\":\"Samuel\",\"locale\":\"da\",\"family_name\":\"Jakobsen\",\"email\":\"playche4600@gmail.com\",\"picture\":\"https://lh3.googleusercontent.com/a/AATXAJxDmNqBxcOtXpWU61uxw6VZVUMEuMNssrFiY8tz=s96-c\"}",
+    "isNewUser": true,
+    "kind": "identitytoolkit#VerifyAssertionResponse"
+  },
+  "operationType": "signIn"
+}
