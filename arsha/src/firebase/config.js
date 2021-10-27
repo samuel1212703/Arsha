@@ -1,8 +1,7 @@
 import { initializeApp } from "firebase/app";
-import "firebase/auth";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { collection, doc, setDoc } from "firebase/firestore";
+import { getFirestore, collection, doc, setDoc } from "firebase/firestore";
+import * as admin from "firebase-admin";
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_API_KEY,
@@ -22,12 +21,35 @@ const db = getFirestore();
 
 export async function createReview(title, creator, rating) {
 	const userID = auth.currentUser;
-	console.log(userID);
-	const reveiwCol = db.collection("users").doc(userID).collection("reviews");
-	await setDoc(reveiwCol, {
+	const reveiwDoc = doc(
+		collection(doc(collection(db, "users"), userID), "reviews"),
+		title
+	);
+	const data = {
 		userID: userID,
 		title: title,
 		creator: creator,
 		rating: rating,
-	});
+		creationDate: new Date(),
+	};
+	await setDoc(reveiwDoc, data);
+}
+
+export async function getUsers() {
+	const userList = (nextPageToken) => {
+		// List batch of users, 1000 at a time.
+		admin
+			.auth()
+			.listUsers(1000, nextPageToken)
+			.then((listUsersResult) => {
+				listUsersResult.users.forEach((userRecord) => {
+					console.log("user", userRecord.toJSON());
+				});
+			})
+			.catch((error) => {
+				console.log("Error listing users:", error);
+			});
+	};
+
+	return userList;
 }

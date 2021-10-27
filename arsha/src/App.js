@@ -1,7 +1,7 @@
 import "./App.css";
 import React, { useState } from "react";
 import { signInWithPopup, signOut } from "firebase/auth";
-import { auth, provider, createReview } from "./firebase/config";
+import { auth, provider, createReview, getUsers } from "./firebase/config";
 import GoogleButton from "react-google-button";
 
 function signinPopup(auth, provider, setLoggedIn) {
@@ -10,19 +10,20 @@ function signinPopup(auth, provider, setLoggedIn) {
 			setLoggedIn(true);
 			console.log(auth);
 		})
-		.catch((error) => {});
+		.catch((error) => {
+			console.log("Could not sign in!");
+		});
 }
 
 function signout(auth, setLoggedIn) {
 	signOut(auth)
 		.then(() => {
 			console.log(auth);
-			// Sign-out successful.
 			console.log("signed out");
 			setLoggedIn(false);
 		})
 		.catch((error) => {
-			// An error happened.
+			console.log("Could not sign out: " + error);
 		});
 }
 
@@ -58,6 +59,9 @@ function App() {
 					<button id="searchButton">
 						<img id="searchImage" src="images/search-icon.png" />
 					</button>
+					{getUsers().map((user) => {
+						<div>{user.name}</div>;
+					})}
 				</div>
 				<div className="mainContent">
 					<div id="reviewImageContainer">
@@ -83,38 +87,57 @@ function App() {
 						</div>
 					</div>
 					<div id="reviewTextContainer">
-						<form>
-							<p>Title</p>
-							<input
-								type="text"
-								id="title"
-								name="title"
-								onChange={(event) => setTitle(event.target.value)}
-							></input>
-							<p>Creator</p>
-							<input
-								type="text"
-								id="creator"
-								name="creator"
-								onChange={(event) => setCreator(event.target.value)}
-							></input>
-							<p>Rating</p>
-							<input
-								type="number"
-								id="rating"
-								name="rating"
-								onChange={(event) => setRating(event.target.value)}
-							></input>
-							<div id="reviewBottom">
-								<button
-									type="submit"
-									id="submit-button"
-									onClick={() => createReview(title, creator, rating)}
-								>
-									Submit Review!
-								</button>
-							</div>
-						</form>
+						<p>Medium</p>
+						<select name="mediums" id="mediums">
+							<option value="Album">Album</option>
+							<option value="Song">Song</option>
+							<option value="Movie">Movie</option>
+							<option value="Artwork">Artwork</option>
+							<option value="VideoGame">Video Game</option>
+							<option value="Actor">Actor</option>
+						</select>
+						<p>Title</p>
+						<input
+							type="text"
+							id="title"
+							name="title"
+							placeholder="Blonde"
+							onChange={(event) => setTitle(event.target.value)}
+						></input>
+						<p>Creator</p>
+						<input
+							type="text"
+							id="creator"
+							name="creator"
+							placeholder="Frank Ocean"
+							onChange={(event) => setCreator(event.target.value)}
+						></input>
+						<p>Rating</p>
+						<input
+							type="number"
+							id="rating"
+							name="rating"
+							placeholder="9.15"
+							onChange={(event) => setRating(event.target.value)}
+						></input>
+						<div id="reviewBottom">
+							<button
+								type="submit"
+								id="submit-button"
+								onClick={() => {
+									if (loggedIn) {
+										createReview(title, creator, rating);
+									} else {
+										window.alert(
+											"Not logged in. Please sign in to submit a review"
+										);
+										// Must be signed in message
+									}
+								}}
+							>
+								Submit Review!
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
