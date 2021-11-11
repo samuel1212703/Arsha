@@ -30,25 +30,30 @@ function signout(auth, setLoggedIn) {
     });
 }
 
+function autoFill(setTitle, setSelectedImage) {
+  setTitle(this.state.suggestionList.title);
+  setSelectedImage(this.state.suggestionList.image);
+}
+
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [title, setTitle] = useState("");
   const [creator, setCreator] = useState("");
   const [rating, setRating] = useState(0);
-  this.state = { suggestionList: {} };
+  this.state = [{}];
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Search Query
   if (searchQuery.length > 3) {
     const movie_api_key = "01096f6ebe34f8db1ce6adc0d4ab0e10";
     const movie_image_url = "https://image.tmdb.org/t/p/w500";
-    const url = (
+    const url =
       "https://api.themoviedb.org/3/search/movie?api_key=" +
       movie_api_key +
       "&language=en-US&query=" +
-      searchQuery +
-      "&page=1&include_adult=true"
-    ).replace(" ", "%20");
+      searchQuery.replace(" ", "%20") +
+      "&page=1&include_adult=true";
     axios.get(url).then(function (response) {
       const data = response.data.results;
       const suggestionUnformatted = [];
@@ -61,11 +66,12 @@ function App() {
       }
       const suggestionFormatted = Object.keys(suggestionUnformatted).sort(
         function (a, b) {
-          return suggestionUnformatted[a] - suggestionUnformatted[b];
+          return (
+            suggestionUnformatted.rating[a] - suggestionUnformatted.rating[b]
+          );
         }
       );
       this.setState({ suggestionList: suggestionFormatted });
-	  console.log(this.state);
     });
   }
 
@@ -147,7 +153,9 @@ function App() {
               id="creator"
               name="creator"
               placeholder="Frank Ocean"
-              onChange={(event) => setCreator(event.target.value)}
+              onChange={(event) => {
+                setCreator(event.target.value);
+              }}
             ></input>
             <p>Rating</p>
             <input
