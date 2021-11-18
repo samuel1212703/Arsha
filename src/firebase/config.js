@@ -33,6 +33,7 @@ export async function createReview(title, creator, rating, medium) {
     collection(doc(collection(db, "users"), userID), "reviews"),
     slugify(title + "-" + creator).toLowerCase()
   );
+  console.log(await getImage(title, creator))
   const data = {
     userNum: await getCounter(),
     userID: userID,
@@ -66,12 +67,14 @@ export async function getUserReviews() {
 }
 
 export async function getImage(title, creator) {
-	const storage = getStorage();
-	return getDownloadURL(ref(storage, "art-images/" + slugify(title + "-" + creator).toLowerCase()))
+  let imgURL = "";
+	const storage = getStorage(app);
+	await getDownloadURL(ref(storage, "art-images/" + slugify(title + "-" + creator).toLowerCase())).then(function(url){ imgURL = url})
+  return imgURL
 }
 
 export async function storeImage(image, title, creator) {
-  const storage = getStorage();
+  const storage = getStorage(app);
   const imageRef = ref(
     storage,
     "art-images/" + slugify(title + "-" + creator).toLowerCase()
