@@ -28,12 +28,14 @@ export const provider = new GoogleAuthProvider();
 const db = getFirestore();
 
 export async function createReview(title, creator, rating, medium) {
+  title.replace(" ", "_")
+  creator.replace(" ", "_")
   const userID = auth.currentUser.uid;
   const reveiwDoc = doc(
     collection(doc(collection(db, "users"), userID), "reviews"),
     slugify(title + "-" + creator).toLowerCase()
   );
-  console.log(await getImage(title, creator))
+  //console.log(await getImage(title, creator))
   const data = {
     userNum: await getCounter(),
     userID: userID,
@@ -42,7 +44,7 @@ export async function createReview(title, creator, rating, medium) {
     rating: rating,
     medium: medium,
     creationDate: new Date(),
-    image: await getImage(title, creator),
+    //image: await getImage(title, creator),
     slug: slugify(title + "-" + creator).toLowerCase(),
   };
   await setDoc(reveiwDoc, data);
@@ -55,8 +57,7 @@ export async function storeNewUser() {
 }
 
 export async function getUserReviews() {
-  //const userID = auth.currentUser.uid;
-  const userID = "ViazQOmE1Qc8owvrFOaXfqlFaSg1";
+  const userID = auth.currentUser.uid;
   const reviewCol = collection(doc(collection(db, "users"), userID), "reviews");
   const reviewSnapshot = await getDocs(reviewCol);
   const reviews = [];
@@ -67,22 +68,22 @@ export async function getUserReviews() {
 }
 
 export async function getImage(title, creator) {
-  let imgURL = "";
-	const storage = getStorage(app);
-	await getDownloadURL(ref(storage, "art-images/" + slugify(title + "-" + creator).toLowerCase())).then(function(url){ imgURL = url})
-  return imgURL
+  // let imgURL = "";
+  // const storage = getStorage(app);
+  // await getDownloadURL(ref(storage, "art-images/" + slugify(title + "-" + creator).toLowerCase())).then(function(url){ imgURL = url})
+  // return imgURL
 }
 
 export async function storeImage(image, title, creator) {
-  const storage = getStorage(app);
-  const imageRef = ref(
-    storage,
-    "art-images/" + slugify(title + "-" + creator).toLowerCase()
-  );
-  var file = new File([image], slugify(title + "-" + creator).toLowerCase(), {
-    type: "image/jpeg",
-  });
-  uploadBytes(imageRef, file);
+  // const storage = getStorage(app);
+  // const imageRef = ref(
+  //   storage,
+  //   "art-images/" + slugify(title + "-" + creator).toLowerCase()
+  // );
+  // var file = new File([image], slugify(title + "-" + creator).toLowerCase(), {
+  //   type: "image/jpeg",
+  // });
+  // uploadBytes(imageRef, file);
 }
 
 export async function getCounter() {
@@ -101,6 +102,12 @@ export async function incrementCounter() {
     console.log("No info document!");
   }
   setDoc(infoRef, { counter: infoSnap.data().counter++ });
+}
+
+export async function addFriend(friendUserID) {
+  const userID = auth.currentUser.uid;
+  const userDoc = doc(collection(db, "users"), userID);
+
 }
 
 export async function getUsers() {}

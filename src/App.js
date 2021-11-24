@@ -1,31 +1,35 @@
 import "./App.css";
 import React, { useState } from "react";
-import { signInWithPopup, signOut } from "firebase/auth";
+import {
+  signInWithPopup,
+  signOut,
+  setPersistence,
+  inMemoryPersistence,
+} from "firebase/auth";
 import {
   auth,
   provider,
   createReview,
   storeNewUser,
   getUserReviews,
-  storeImage,
 } from "./firebase/config";
 import GoogleButton from "react-google-button";
-import axios from "axios";
 //import FuzzySearch from "react-fuzzy";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from "react-responsive-carousel";
+import { Container, Row, Col } from "react-grid-system";
 
 function signinPopup(auth, provider, setLoggedIn) {
-  signInWithPopup(auth, provider)
-    .then((result) => {
+  setPersistence(auth, inMemoryPersistence).then(async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
       setLoggedIn(true);
       storeNewUser();
       console.log(result);
-    })
-    .catch((error) => {
+    } catch (error) {
       console.log("Could not sign in!");
       console.log(error);
-    });
+    }
+  });
 }
 
 function signout(auth, setLoggedIn) {
@@ -40,102 +44,82 @@ function signout(auth, setLoggedIn) {
     });
 }
 
-function autoFill(setTitle, setSelectedImage, i) {
-  setTitle(suggestionList[i].title);
-  setSelectedImage(suggestionList[i].image);
-}
+// function autoFill(setTitle, setSelectedImage, i) {
+//   setTitle(suggestionList[i].title);
+//   setSelectedImage(suggestionList[i].image);
+// }
 
-async function setSuggestionList(searchQuery) {
-  const movie_api_key = "01096f6ebe34f8db1ce6adc0d4ab0e10";
-  const movie_image_url = "https://image.tmdb.org/t/p/w500";
-  const url =
-    "https://api.themoviedb.org/3/search/movie?api_key=" +
-    movie_api_key +
-    "&language=en-US&query=" +
-    searchQuery.replace(" ", "%20") +
-    "&page=1&include_adult=true";
-  return axios.get(url).then(function (response) {
-    const data = response.data.results;
-    const suggestionUnformatted = [];
-    for (var i = 0; i < 3; i++) {
-      suggestionUnformatted.push({
-        title: data[i].title,
-        image: movie_image_url + data[i].poster_path,
-        rating: data[i].vote_average,
-      });
-    }
-    return Object.keys(suggestionUnformatted).sort(function (a, b) {
-      return suggestionUnformatted.rating[a] - suggestionUnformatted.rating[b];
-    });
-  });
-}
+// async function setSuggestionList(searchQuery) {
+//   const movie_api_key = process.env.REACT_APP_MOVIE_API_KEY;
+//   const movie_image_url = "https://image.tmdb.org/t/p/w500";
+//   const url =
+//     "https://api.themoviedb.org/3/search/movie?api_key=" +
+//     movie_api_key +
+//     "&language=en-US&query=" +
+//     searchQuery.replace(" ", "%20") +
+//     "&page=1&include_adult=true";
+//   return axios.get(url).then(function (response) {
+//     const data = response.data.results;
+//     const suggestionUnformatted = [];
+//     for (var i = 0; i < 3; i++) {
+//       suggestionUnformatted.push({
+//         title: data[i].title,
+//         image: movie_image_url + data[i].poster_path,
+//         rating: data[i].vote_average,
+//       });
+//     }
+//     return Object.keys(suggestionUnformatted).sort(function (a, b) {
+//       return suggestionUnformatted.rating[a] - suggestionUnformatted.rating[b];
+//     });
+//   });
+// }
 
-var suggestionList = [
-  {
-    id: 1,
-    title: "",
-    author: "",
-    image: "",
-    rating: "",
-  },
-  {
-    id: 2,
-    title: "",
-    author: "",
-    image: "",
-    rating: "",
-  },
-  {
-    id: 3,
-    title: "",
-    author: "",
-    image: "",
-    rating: "",
-  },
-];
+// var suggestionList = [
+//   {
+//     id: 1,
+//     title: "",
+//     author: "",
+//     image: "",
+//     rating: "",
+//   },
+//   {
+//     id: 2,
+//     title: "",
+//     author: "",
+//     image: "",
+//     rating: "",
+//   },
+//   {
+//     id: 3,
+//     title: "",
+//     author: "",
+//     image: "",
+//     rating: "",
+//   },
+// ];
 
-var displayReviews = [
-  {
-    image: "https://image.tmdb.org/t/p/w500/k7uOoGUk1JiN3gfKefUj2kP3Vu6.jpg",
-    title: "Vampire Hunter D.",
-    reviewer: "Samuel Jakobsen",
-    rating: "unknown",
-  },
-  {
-    image: "https://image.tmdb.org/t/p/w500/k7uOoGUk1JiN3gfKefUj2kP3Vu6.jpg",
-    title: "Vampire Hunter D.",
-    reviewer: "Samuel Jakobsen",
-    rating: "unknown",
-  },
-  {
-    image: "https://image.tmdb.org/t/p/w500/k7uOoGUk1JiN3gfKefUj2kP3Vu6.jpg",
-    title: "Vampire Hunter D.",
-    reviewer: "Samuel Jakobsen",
-    rating: "unknown",
-  },
-];
+//var displayReviews = [];
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  // const [selectedImage, setSelectedImage] = useState(null);
   const [title, setTitle] = useState("");
   const [creator, setCreator] = useState("");
   const [rating, setRating] = useState(0);
-  const [medium, setMedium] = useState("");
+  const [medium, setMedium] = useState("Album");
+  const [displayReviews, setDisplayReviews] = useState([]);
 
-  const maxImageSizeBytes = 5000000;
+  // const maxImageSizeBytes = 5000000;
 
-  getUserReviews().then((product) => {
-    if (product[0]) {
-      displayReviews[0] = product[0];
-    }
-    if (product[1]) {
-      displayReviews[1] = product[1];
-    }
-    if (product[2]) {
-      displayReviews[2] = product[2];
-    }
-  });
+  if (loggedIn) {
+    getUserReviews().then((reviews) => {
+      reviews.forEach((review, i) => {
+        var newDisplayReviews = displayReviews;
+        newDisplayReviews[i] = review;
+        setDisplayReviews(newDisplayReviews);
+      });
+    });
+  }
 
   // // Search Query
   // const [searchQuery, setSearchQuery] = useState("");
@@ -157,10 +141,13 @@ function App() {
           onClick={() => signinPopup(auth, provider, setLoggedIn)}
         />
       )}
-      <div className="mainPage">
-        <div className="mainContent">
-          <div id="reviewImageContainer">
-            <div>
+      <Container>
+        <Row>
+          <div className="mainPage">
+            <Col md={12} lg={6}>
+              <div className="mainContent">
+                <div id="reviewImageContainer">
+                  {/* <div>
               {selectedImage && (
                 <div>
                   <img
@@ -179,25 +166,25 @@ function App() {
                   setSelectedImage(event.target.files[0]);
                 }}
               />
-            </div>
-          </div>
-          <div id="reviewTextContainer">
-            <p>Medium</p>
-            <select
-              name="mediums"
-              id="mediums"
-              onChange={(event) => setMedium(event.target.value)}
-            >
-              <option value="Album">Album</option>
-              <option value="Song">Song</option>
-              <option value="Movie">Movie</option>
-              <option value="Artwork">Artwork</option>
-              <option value="VideoGame">Video Game</option>
-              <option value="Actor">Actor</option>
-            </select>
-            <p>Title</p>
-            <div>
-              {/* <FuzzySearch
+            </div> */}
+                </div>
+                <div id="reviewTextContainer">
+                  <p>Medium</p>
+                  <select
+                    name="mediums"
+                    id="mediums"
+                    value="mediums"
+                    onChange={(event) => {
+                      setMedium(event.target.value);
+                      console.log(event.target.value);
+                    }}
+                  >
+                    <option value="Album">Album</option>
+                    <option value="NotAlbum">NotAlbum</option>
+                  </select>
+                  <p>Title</p>
+                  <div>
+                    {/* <FuzzySearch
               list={suggestionList}
               keys={["author", "title"]}
               width={430}
@@ -229,111 +216,125 @@ function App() {
                 });
               }}
             /> */}
-            </div>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              placeholder="Blonde"
-              value={title}
-              onChange={(event) => {
-                setTitle(event.target.value);
-                // setSearchQuery(event.target.value);
-              }}
-            ></input>
-            <p>Creator</p>
-            <input
-              type="text"
-              id="creator"
-              name="creator"
-              placeholder="Frank Ocean"
-              value={creator}
-              onChange={(event) => {
-                setCreator(event.target.value);
-              }}
-            ></input>
-            <p>Rating</p>
-            <input
-              type="number"
-              id="rating"
-              name="rating"
-              placeholder="9.15"
-              value={rating}
-              onChange={(event) => setRating(event.target.value)}
-            ></input>
-            <div id="reviewBottom">
-              <button
-                type="submit"
-                id="submit-button"
-                onClick={() => {
-                  if (loggedIn) {
-                    if ((title !== "") & (creator !== "") & (rating !== "")) {
-                      if (selectedImage.size < maxImageSizeBytes) {
-                        createReview(title, creator, rating, medium);
-                        console.log(selectedImage);
-                        storeImage(selectedImage, title, creator);
-                        setTitle("");
-                        setCreator("");
-                        setRating(0);
-                        window.alert("Review Submitted!");
-                      } else {
-                        window.alert(
-                          "Image file too big. Must be under: " +
-                            maxImageSizeBytes / 1000000 +
-                            "MB"
-                        );
-                      }
-                    } else {
-                      window.alert(
-                        "Fill out all information before submitting"
-                      );
-                    }
-                  } else {
-                    window.alert(
-                      "Not logged in. Please sign in to submit a review"
-                    );
-                  }
-                }}
-              >
-                Submit Review!
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="contentContainer">
-          <div className="sideBar">
-            <input
-              id="searchBar"
-              type="text"
-              placeholder="Enter user name or id"
-            />
-            <button id="searchButton">
-              <img id="searchImage" src="images/search-icon.png" />
-            </button>
-            {/* getUsers().map((user) => {
-            <div>{user.name}</div>;
-          }) */}
-          </div>
-          <div className="carouselContainer">
-            <Carousel>
-              <div>
-                <img src={displayReviews[0].image} />
-                <p className="legend">
-                  {displayReviews[0].title} - {displayReviews[0].rating}
-                </p>
+                  </div>
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="Blonde"
+                    value={title}
+                    onChange={(event) => {
+                      setTitle(event.target.value);
+                      // setSearchQuery(event.target.value);
+                    }}
+                  ></input>
+                  <p>Creator</p>
+                  <input
+                    type="text"
+                    id="creator"
+                    name="creator"
+                    placeholder="Frank Ocean"
+                    value={creator}
+                    onChange={(event) => {
+                      setCreator(event.target.value);
+                    }}
+                  ></input>
+                  <p>Rating</p>
+                  <input
+                    type="number"
+                    id="rating"
+                    name="rating"
+                    placeholder="9.15"
+                    value={rating}
+                    onChange={(event) => setRating(event.target.value)}
+                  ></input>
+                  <div id="reviewBottom">
+                    <button
+                      type="submit"
+                      id="submit-button"
+                      onClick={() => {
+                        if (loggedIn) {
+                          if (
+                            (title !== "") &
+                            (creator !== "") &
+                            (rating !== "")
+                          ) {
+                            createReview(title, creator, rating, medium);
+                            //storeImage(selectedImage, title, creator);
+                            setTitle("");
+                            setCreator("");
+                            setRating(0);
+                            window.alert("Review Submitted!");
+                            // if (selectedImage.size < maxImageSizeBytes) {
+                            // } else {
+                            //   window.alert(
+                            //     "Image file too big. Must be under: " +
+                            //       maxImageSizeBytes / 1000000 +
+                            //       "MB"
+                            //   );
+                            // }
+                          } else {
+                            window.alert(
+                              "Fill out all information before submitting"
+                            );
+                          }
+                        } else {
+                          window.alert(
+                            "Not logged in. Please sign in to submit a review"
+                          );
+                        }
+                      }}
+                    >
+                      Submit Review!
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div>
-                <img src={displayReviews[1].image} />
-                <p className="legend">{displayReviews[1].title}</p>
+            </Col>
+            <Col md={12} lg={6}>
+              <div className="contentContainer">
+                <div className="search-bars">
+                  <input
+                    id="searchBar"
+                    type="text"
+                    placeholder="Enter medium, title, creator"
+                  />
+                  <button id="searchButton">
+                    <img
+                      className="searchImage"
+                      src="images/search-icon.png"
+                      alt="Search icon"
+                    />
+                  </button>
+                </div>
+                <div className="search-bars">
+                  <input
+                    id="friendSearchBar"
+                    type="text"
+                    placeholder="Enter user id"
+                  />
+                  <button id="searchButton">
+                    <img
+                      className="searchImage"
+                      src="images/plus-icon.png"
+                      alt="Search icon"
+                    />
+                  </button>
+                </div>
+                {displayReviews.map((review, i) => {
+                  return (
+                    <div key={i}>
+                      <p key={i} className="legend">
+                        {review.title} - {review.rating}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
-              <div>
-                <img src={displayReviews[2].image} />
-                <p className="legend">{displayReviews[2].title}</p>
-              </div>
-            </Carousel>
+            </Col>
           </div>
-        </div>
-      </div>
+        </Row>
+      </Container>
     </div>
   );
 }
