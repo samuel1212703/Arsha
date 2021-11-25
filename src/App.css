@@ -17,7 +17,12 @@ h1 {
 .mainPage {
   margin: auto;
   width: 100%;
-  display:contents;
+  display: contents;
+}
+
+.review-box {
+  background-color: rgb(0, 0, 0, 0.25);
+  border-radius: 7px;
 }
 
 .mainContent {
@@ -37,8 +42,8 @@ h1 {
 }
 
 .carouselContainer {
-	width: 80%;
-	margin: auto;
+  width: 80%;
+  margin: auto;
 }
 
 #searchBar {
@@ -61,12 +66,12 @@ h1 {
 
 #reviewImageContainer {
   width: 80%;
-  margin:auto;
+  margin: auto;
 }
 
 #reviewTextContainer {
   width: 80%;
-  margin:auto;
+  margin: auto;
 }
 
 #reviewImage {

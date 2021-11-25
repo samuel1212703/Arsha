@@ -27,9 +27,9 @@ export const auth = getAuth();
 export const provider = new GoogleAuthProvider();
 const db = getFirestore();
 
-export async function createReview(title, creator, rating, medium) {
-  title.replace(" ", "_")
-  creator.replace(" ", "_")
+export async function createReview(title, creator, rating, medium, reviewer) {
+  title.replace(" ", "_");
+  creator.replace(" ", "_");
   const userID = auth.currentUser.uid;
   const reveiwDoc = doc(
     collection(doc(collection(db, "users"), userID), "reviews"),
@@ -43,6 +43,7 @@ export async function createReview(title, creator, rating, medium) {
     creator: creator,
     rating: rating,
     medium: medium,
+    reviewer: reviewer,
     creationDate: new Date(),
     //image: await getImage(title, creator),
     slug: slugify(title + "-" + creator).toLowerCase(),
@@ -106,8 +107,20 @@ export async function incrementCounter() {
 
 export async function addFriend(friendUserID) {
   const userID = auth.currentUser.uid;
-  const userDoc = doc(collection(db, "users"), userID);
-
+  if (friendUserID !== userID) {
+    console.log(friendUserID);
+    const friendSnap = await getDoc(doc(collection(db, "users"), friendUserID));
+    console.log(friendSnap.exists())
+    if (friendSnap.get()) {
+      const userDoc = doc(collection(db, "users"), userID);
+      setDoc(collection(userDoc, "friends"), { friendID: friendUserID });
+      return "Friend added!"
+    } else {
+      return "No user with that user id"
+    }
+  } else {
+    return "You cannot add yourself";
+  }
 }
 
 export async function getUsers() {}

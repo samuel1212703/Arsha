@@ -12,13 +12,13 @@ import {
   createReview,
   storeNewUser,
   getUserReviews,
+  addFriend,
 } from "./firebase/config";
 import GoogleButton from "react-google-button";
-//import FuzzySearch from "react-fuzzy";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Container, Row, Col } from "react-grid-system";
 
-function signinPopup(auth, provider, setLoggedIn) {
+function signinPopup(setLoggedIn) {
   setPersistence(auth, inMemoryPersistence).then(async () => {
     try {
       const result = await signInWithPopup(auth, provider);
@@ -26,90 +26,37 @@ function signinPopup(auth, provider, setLoggedIn) {
       storeNewUser();
       console.log(result);
     } catch (error) {
-      console.log("Could not sign in!");
-      console.log(error);
+      window.alert("Could not sign in. We apologize");
     }
   });
 }
 
-function signout(auth, setLoggedIn) {
+function signout(setLoggedIn) {
   signOut(auth)
     .then(() => {
-      console.log(auth);
-      console.log("signed out");
       setLoggedIn(false);
     })
     .catch((error) => {
-      console.log("Could not sign out: " + error);
+      window.alert("Could not sign out. We apologize");
     });
 }
 
-// function autoFill(setTitle, setSelectedImage, i) {
-//   setTitle(suggestionList[i].title);
-//   setSelectedImage(suggestionList[i].image);
-// }
-
-// async function setSuggestionList(searchQuery) {
-//   const movie_api_key = process.env.REACT_APP_MOVIE_API_KEY;
-//   const movie_image_url = "https://image.tmdb.org/t/p/w500";
-//   const url =
-//     "https://api.themoviedb.org/3/search/movie?api_key=" +
-//     movie_api_key +
-//     "&language=en-US&query=" +
-//     searchQuery.replace(" ", "%20") +
-//     "&page=1&include_adult=true";
-//   return axios.get(url).then(function (response) {
-//     const data = response.data.results;
-//     const suggestionUnformatted = [];
-//     for (var i = 0; i < 3; i++) {
-//       suggestionUnformatted.push({
-//         title: data[i].title,
-//         image: movie_image_url + data[i].poster_path,
-//         rating: data[i].vote_average,
-//       });
-//     }
-//     return Object.keys(suggestionUnformatted).sort(function (a, b) {
-//       return suggestionUnformatted.rating[a] - suggestionUnformatted.rating[b];
-//     });
-//   });
-// }
-
-// var suggestionList = [
-//   {
-//     id: 1,
-//     title: "",
-//     author: "",
-//     image: "",
-//     rating: "",
-//   },
-//   {
-//     id: 2,
-//     title: "",
-//     author: "",
-//     image: "",
-//     rating: "",
-//   },
-//   {
-//     id: 3,
-//     title: "",
-//     author: "",
-//     image: "",
-//     rating: "",
-//   },
-// ];
-
-//var displayReviews = [];
+async function addAFriend(loggedIn, friendID) {
+  if (loggedIn) {
+    window.alert(await addFriend(friendID));
+  } else {
+    window.alert("Need to be logged in to add a friend");
+  }
+}
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  // const [selectedImage, setSelectedImage] = useState(null);
   const [title, setTitle] = useState("");
   const [creator, setCreator] = useState("");
   const [rating, setRating] = useState(0);
   const [medium, setMedium] = useState("Album");
   const [displayReviews, setDisplayReviews] = useState([]);
-
-  // const maxImageSizeBytes = 5000000;
+  const [friendUserID, setFriendUserID] = useState("");
 
   if (loggedIn) {
     getUserReviews().then((reviews) => {
@@ -121,24 +68,20 @@ function App() {
     });
   }
 
-  // // Search Query
-  // const [searchQuery, setSearchQuery] = useState("");
-  // if (searchQuery.length > 0) {
-  //   suggestionList = setSuggestionList(searchQuery);
-  // }
-
   return (
     <div className="App">
       <h1>Arsha</h1>
       {loggedIn ? (
         <div>
-          <p>{auth.currentUser.displayName}</p>
-          <button onClick={() => signout(auth, setLoggedIn)}>Sign out</button>
+          <p>
+            {auth.currentUser.displayName} - {auth.currentUser.uid}
+          </p>
+          <button onClick={() => signout(setLoggedIn)}>Sign out</button>
         </div>
       ) : (
         <GoogleButton
           id="google-signin"
-          onClick={() => signinPopup(auth, provider, setLoggedIn)}
+          onClick={() => signinPopup(setLoggedIn)}
         />
       )}
       <Container>
@@ -146,77 +89,23 @@ function App() {
           <div className="mainPage">
             <Col md={12} lg={6}>
               <div className="mainContent">
-                <div id="reviewImageContainer">
-                  {/* <div>
-              {selectedImage && (
-                <div>
-                  <img
-                    id="reviewImage"
-                    alt="Imagefile"
-                    width={"250px"}
-                    src={URL.createObjectURL(selectedImage)}
-                  />
-                  <button onClick={() => setSelectedImage(null)}>Remove</button>
-                </div>
-              )}
-              <input
-                type="file"
-                name="myImage"
-                onChange={(event) => {
-                  setSelectedImage(event.target.files[0]);
-                }}
-              />
-            </div> */}
-                </div>
+                <div id="reviewImageContainer"></div>
                 <div id="reviewTextContainer">
                   <p>Medium</p>
                   <select
                     name="mediums"
                     id="mediums"
-                    value="mediums"
+                    value={medium}
                     onChange={(event) => {
                       setMedium(event.target.value);
                       console.log(event.target.value);
                     }}
                   >
                     <option value="Album">Album</option>
-                    <option value="NotAlbum">NotAlbum</option>
+                    <option value="Games">Games</option>
+                    <option value="Movie">Movie</option>
                   </select>
                   <p>Title</p>
-                  <div>
-                    {/* <FuzzySearch
-              list={suggestionList}
-              keys={["author", "title"]}
-              width={430}
-              onChange={(event) => {
-                setSearchQuery(event.target.value);
-                console.log(searchQuery);
-              }}
-              onSelect={(newSelectedItem) => {
-                autoFill(setTitle, setSelectedImage, newSelectedItem.id--);
-              }}
-              resultsTemplate={(props, state, styles, clickHandler) => {
-                return state.results.map((val, i) => {
-                  const style = {
-                    backgroundColor: "white",
-                  };
-                  const imageStyle = {
-                    width: "64px",
-                    height: "64px",
-                  };
-                  return (
-                    <div key={i} style={style} onClick={() => clickHandler(i)}>
-                      <img src={val.image} style={imageStyle}></img>
-                      {val.title}
-                      <span style={{ float: "right", opacity: 0.5 }}>
-                        by {val.author}
-                      </span>
-                    </div>
-                  );
-                });
-              }}
-            /> */}
-                  </div>
                   <input
                     type="text"
                     id="title"
@@ -225,7 +114,6 @@ function App() {
                     value={title}
                     onChange={(event) => {
                       setTitle(event.target.value);
-                      // setSearchQuery(event.target.value);
                     }}
                   ></input>
                   <p>Creator</p>
@@ -259,20 +147,17 @@ function App() {
                             (creator !== "") &
                             (rating !== "")
                           ) {
-                            createReview(title, creator, rating, medium);
-                            //storeImage(selectedImage, title, creator);
+                            createReview(
+                              title,
+                              creator,
+                              rating,
+                              medium,
+                              auth.currentUser.displayName
+                            );
                             setTitle("");
                             setCreator("");
                             setRating(0);
                             window.alert("Review Submitted!");
-                            // if (selectedImage.size < maxImageSizeBytes) {
-                            // } else {
-                            //   window.alert(
-                            //     "Image file too big. Must be under: " +
-                            //       maxImageSizeBytes / 1000000 +
-                            //       "MB"
-                            //   );
-                            // }
                           } else {
                             window.alert(
                               "Fill out all information before submitting"
@@ -311,9 +196,18 @@ function App() {
                   <input
                     id="friendSearchBar"
                     type="text"
+                    value={friendUserID}
                     placeholder="Enter user id"
+                    onChange={(event) => setFriendUserID(event.target.value)}
                   />
-                  <button id="searchButton">
+                  <button
+                    id="searchButton"
+                    onClick={() => {
+                      if (friendUserID !== "") {
+                        addAFriend(loggedIn, friendUserID);
+                      }
+                    }}
+                  >
                     <img
                       className="searchImage"
                       src="images/plus-icon.png"
@@ -323,9 +217,12 @@ function App() {
                 </div>
                 {displayReviews.map((review, i) => {
                   return (
-                    <div key={i}>
-                      <p key={i} className="legend">
+                    <div key={i} className="review-box">
+                      <h3 key={i} className="legend">
                         {review.title} - {review.rating}
+                      </h3>
+                      <p>
+                        {review.reviewer} - {review.creator}
                       </p>
                     </div>
                   );
