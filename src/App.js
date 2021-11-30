@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   signInWithPopup,
   signOut,
@@ -13,6 +13,7 @@ import {
   storeNewUser,
   getUserReviews,
   addFriend,
+  getAllUserFriendIDs,
 } from "./firebase/config";
 import GoogleButton from "react-google-button";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
@@ -23,8 +24,9 @@ function signinPopup(setLoggedIn) {
     try {
       const result = await signInWithPopup(auth, provider);
       setLoggedIn(true);
-      storeNewUser();
-      console.log(result);
+      if(result._tokenResponse.isNewUser !== null){
+        storeNewUser(result);
+      }
     } catch (error) {
       window.alert("Could not sign in. We apologize");
     }
@@ -57,16 +59,25 @@ function App() {
   const [medium, setMedium] = useState("Album");
   const [displayReviews, setDisplayReviews] = useState([]);
   const [friendUserID, setFriendUserID] = useState("");
+  const [noFriends, setNoFriends] = useState(false);
 
-  if (loggedIn) {
-    getUserReviews().then((reviews) => {
-      reviews.forEach((review, i) => {
-        var newDisplayReviews = displayReviews;
-        newDisplayReviews[i] = review;
-        setDisplayReviews(newDisplayReviews);
+  useEffect(() => {
+    if (loggedIn) {
+      getAllUserFriendIDs().then((friend) => {
+        if (friend[0] != null) {
+          getUserReviews(friend[0]).then((reviews) => {
+            reviews.forEach((review, i) => {
+              var newDisplayReviews = displayReviews;
+              newDisplayReviews[i] = review;
+              setDisplayReviews(newDisplayReviews);
+            });
+          });
+        } else {
+          setNoFriends(true);
+        }
       });
-    });
-  }
+    }
+  });
 
   return (
     <div className="App">
@@ -98,11 +109,10 @@ function App() {
                     value={medium}
                     onChange={(event) => {
                       setMedium(event.target.value);
-                      console.log(event.target.value);
                     }}
                   >
                     <option value="Album">Album</option>
-                    <option value="Games">Games</option>
+                    <option value="Game">Game</option>
                     <option value="Movie">Movie</option>
                   </select>
                   <p>Title</p>

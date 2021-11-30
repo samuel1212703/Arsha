@@ -8,7 +8,6 @@ import {
   getDoc,
   getDocs,
 } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import slugify from "slugify";
 
 const firebaseConfig = {
@@ -53,12 +52,10 @@ export async function createReview(title, creator, rating, medium, reviewer) {
 }
 
 export async function storeNewUser() {
-  //console.log(auth);
-  //console.log(getAdditionalUserInfo(auth.currentUser.uid)["_tokenresponse"].isNewUser);
+  incrementCounter();
 }
 
-export async function getUserReviews() {
-  const userID = auth.currentUser.uid;
+export async function getUserReviews(userID) {
   const reviewCol = collection(doc(collection(db, "users"), userID), "reviews");
   const reviewSnapshot = await getDocs(reviewCol);
   const reviews = [];
@@ -68,23 +65,15 @@ export async function getUserReviews() {
   return reviews;
 }
 
-export async function getImage(title, creator) {
-  // let imgURL = "";
-  // const storage = getStorage(app);
-  // await getDownloadURL(ref(storage, "art-images/" + slugify(title + "-" + creator).toLowerCase())).then(function(url){ imgURL = url})
-  // return imgURL
-}
-
-export async function storeImage(image, title, creator) {
-  // const storage = getStorage(app);
-  // const imageRef = ref(
-  //   storage,
-  //   "art-images/" + slugify(title + "-" + creator).toLowerCase()
-  // );
-  // var file = new File([image], slugify(title + "-" + creator).toLowerCase(), {
-  //   type: "image/jpeg",
-  // });
-  // uploadBytes(imageRef, file);
+export async function getAllUserFriendIDs() {
+  const userID = auth.currentUser.uid;
+  const friendCol = collection(doc(collection(db, "users"), userID), "friends");
+  const friends = [];
+  const friendSnapshot = await getDocs(friendCol);
+  friendSnapshot.forEach((document) => {
+    friends.push(document.id);
+  });
+  return friends;
 }
 
 export async function getCounter() {
@@ -109,18 +98,19 @@ export async function addFriend(friendUserID) {
   const userID = auth.currentUser.uid;
   if (friendUserID !== userID) {
     console.log(friendUserID);
-    const friendSnap = await getDoc(doc(collection(db, "users"), friendUserID));
-    console.log(friendSnap.exists())
-    if (friendSnap.get()) {
+    const friendUserSnap = await getDoc(
+      doc(collection(db, "users"), friendUserID)
+    );
+    console.log(friendUserSnap);
+    if (friendUserSnap) {
       const userDoc = doc(collection(db, "users"), userID);
-      setDoc(collection(userDoc, "friends"), { friendID: friendUserID });
-      return "Friend added!"
+      const friends = doc(collection(userDoc, "friends"), friendUserID);
+      setDoc(friends, { friendID: friendUserID });
+      return "Friend added!";
     } else {
-      return "No user with that user id"
+      return "No user with that user id";
     }
   } else {
     return "You cannot add yourself";
   }
 }
-
-export async function getUsers() {}
