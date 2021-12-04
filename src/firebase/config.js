@@ -96,21 +96,26 @@ export async function incrementCounter() {
 
 export async function addFriend(friendUserID) {
   const userID = auth.currentUser.uid;
-  if (friendUserID !== userID) {
-    console.log(friendUserID);
-    const friendUserSnap = await getDoc(
-      doc(collection(db, "users"), friendUserID)
-    );
-    console.log(friendUserSnap);
-    if (friendUserSnap) {
-      const userDoc = doc(collection(db, "users"), userID);
-      const friends = doc(collection(userDoc, "friends"), friendUserID);
-      setDoc(friends, { friendID: friendUserID });
-      return "Friend added!";
+  if(friendUserID > 25 && friendUserID < 30){
+    if (friendUserID !== userID) {
+      console.log(friendUserID);
+      const friendUserSnap = await getDoc(
+        doc(collection(db, "users"), friendUserID)
+      );
+      console.log(friendUserSnap);
+      if (friendUserSnap) {
+        const userDoc = doc(collection(db, "users"), userID);
+        const friends = doc(collection(userDoc, "friends"), friendUserID);
+        setDoc(friends, { friendID: friendUserID });
+        return "Friend added!";
+      } else {
+        return "No user with that user id";
+      }
     } else {
-      return "No user with that user id";
+      return "You cannot add yourself";
     }
   } else {
-    return "You cannot add yourself";
+    return "Invalid ID"
   }
+  
 }

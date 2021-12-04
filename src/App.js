@@ -114,7 +114,7 @@ function App() {
   };
 
   const supStyle = {
-    backgroundColor: colors[3],
+    backgroundColor: colors[2],
     color: colors[1],
     padding: 15,
   };
@@ -145,7 +145,7 @@ function App() {
         <Header style={headerStyle}>
           <h1>Arsha</h1>
         </Header>
-        <Layout>
+        <Layout style={{ height: "100%" }}>
           <Content style={supStyle}>
             <Row>
               <Col xs={{ span: 24 }} lg={{ span: 12 }} style={colStyle}>
@@ -253,14 +253,7 @@ function App() {
                   <Row>
                     <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                       <Search
-                        placeholder="Enter medium, title, creator"
-                        onSearch={(event) => setSearchTerm(event)}
-                        style={inputStyle}
-                      />
-                    </Col>
-                    <Col xs={{ span: 24 }} lg={{ span: 12 }}>
-                      <Search
-                        placeholder="Search by ID"
+                        placeholder="Add friend by ID"
                         onSearch={(event) => {
                           setFriendUserID(event);
                           if (friendUserID !== "") {
@@ -270,12 +263,18 @@ function App() {
                         style={inputStyle}
                       />
                     </Col>
+                    <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+                      <Search
+                        placeholder="Enter medium, title, creator"
+                        onSearch={(event) => setSearchTerm(event)}
+                        style={inputStyle}
+                      />
+                    </Col>
                   </Row>
 
                   <div id="review-col">
                     {displayReviews
                       .filter((review) => {
-                        console.log(review);
                         if (
                           searchTerm === "" ||
                           review.title
@@ -310,8 +309,10 @@ function App() {
             </Row>
             {loggedIn ? (
               <div>
-                <p>
-                  {auth.currentUser.displayName} - {auth.currentUser.uid}
+                <p style={{color: colors[0]}}>
+                  <strong>
+                    {auth.currentUser.displayName} - {auth.currentUser.uid}
+                  </strong>
                 </p>
                 <Button onClick={() => signout(setLoggedIn)}>Sign out</Button>
                 <Avatar size={64} icon={<UserOutlined />} />
