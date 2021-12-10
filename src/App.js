@@ -74,6 +74,7 @@ async function addAFriend(loggedIn, friendID) {
 async function getAllFriendReviews() {
   var finalReviews = [];
   const friendIDs = await getAllUserFriendIDs();
+  friendIDs.push(auth.currentUser.uid);
   for (const id of friendIDs) {
     var userReviews = await getUserReviews(id);
     for (const review of userReviews) {
@@ -139,9 +140,14 @@ function App() {
     marginBottom: 15,
   };
 
+  const layoutStyle = {
+    height: "100vh",
+    maxHeight: "100%",
+  };
+
   return (
     <div className="App">
-      <Layout style={{ height: "100vh" }}>
+      <Layout style={layoutStyle}>
         <Header style={headerStyle}>
           <h1>Arsha</h1>
         </Header>
@@ -271,7 +277,6 @@ function App() {
                       />
                     </Col>
                   </Row>
-
                   <div id="review-col">
                     {displayReviews
                       .filter((review) => {
@@ -297,7 +302,8 @@ function App() {
                               {review.title} - {review.rating}
                             </h3>
                             <p>
-                              {review.reviewer} - {review.creator}
+                              {review.reviewer} - {review.creator} -{" "}
+                              {review.medium}
                             </p>
                             <Progress percent={review.rating * 10} />
                           </div>
@@ -309,7 +315,7 @@ function App() {
             </Row>
             {loggedIn ? (
               <div>
-                <p style={{color: colors[0]}}>
+                <p style={{ color: colors[0] }}>
                   <strong>
                     {auth.currentUser.displayName} - {auth.currentUser.uid}
                   </strong>

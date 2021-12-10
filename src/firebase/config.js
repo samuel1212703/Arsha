@@ -96,7 +96,7 @@ export async function incrementCounter() {
 
 export async function addFriend(friendUserID) {
   const userID = auth.currentUser.uid;
-  if(friendUserID > 25 && friendUserID < 30){
+  if(friendUserID > 15 && friendUserID < 40){
     if (friendUserID !== userID) {
       console.log(friendUserID);
       const friendUserSnap = await getDoc(
