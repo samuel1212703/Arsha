@@ -125,7 +125,7 @@ function App() {
   };
 
   const sliderStyle = {
-    width: "30%",
+    width: "50%",
     margin: "auto",
   };
 
@@ -140,14 +140,9 @@ function App() {
     marginBottom: 15,
   };
 
-  const layoutStyle = {
-    height: "100vh",
-    maxHeight: "100%",
-  };
-
   return (
     <div className="App">
-      <Layout style={layoutStyle}>
+      <Layout>
         <Header style={headerStyle}>
           <h1>Arsha</h1>
         </Header>
@@ -305,7 +300,7 @@ function App() {
                               {review.reviewer} - {review.creator} -{" "}
                               {review.medium}
                             </p>
-                            <Progress percent={review.rating * 10} />
+                            <Progress style={sliderStyle} percent={Math.round(review.rating * 10)} />
                           </div>
                         );
                       })}
