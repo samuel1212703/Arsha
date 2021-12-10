@@ -108,12 +108,6 @@ function App() {
     color: colors[9],
   };
 
-  const mainStyle = {
-    backgroundColor: colors[1],
-    color: colors[9],
-    padding: 15,
-  };
-
   const supStyle = {
     backgroundColor: colors[2],
     color: colors[1],
@@ -121,7 +115,9 @@ function App() {
   };
 
   const inputStyle = {
+    borderRadius: 5,
     width: 200,
+    margin: "3px",
   };
 
   const sliderStyle = {
@@ -130,8 +126,10 @@ function App() {
   };
 
   const colStyle = {
-    padding: 15,
-    backgroundColor: "rgba(0, 0, 0, 0.25)",
+    borderRadius: 10,
+    padding: 25,
+    backgroundColor: colors[1],
+    marginBottom: 15,
   };
 
   const submitButtonStyle = {
@@ -140,16 +138,60 @@ function App() {
     marginBottom: 15,
   };
 
+  const reviewCollectionStyle = {
+    maxHeight: "100%",
+    overflow: "auto",
+  };
+
+  const reviewItemStyle = {
+    borderRadius: 10,
+    backgroundColor: colors[2],
+    border: "2px solid" + colors[0],
+  };
+
+  const buttonStyle = {
+    backgroundColor: colors[0],
+  };
+
+  const bodyStyle = { minHeight: "100vh" };
+
   return (
     <div className="App">
-      <Layout>
+      <Layout style={bodyStyle}>
         <Header style={headerStyle}>
           <h1>Arsha</h1>
         </Header>
-        <Layout style={{ height: "100%" }}>
+        <Layout>
           <Content style={supStyle}>
+            {loggedIn ? (
+              <div>
+                <p style={{ color: colors[0] }}>
+                  <strong>
+                    <Avatar size={32} icon={<UserOutlined />} />
+                    {auth.currentUser.displayName} - {auth.currentUser.uid}
+                  </strong>
+                </p>
+                <Button
+                  style={buttonStyle}
+                  onClick={() => signout(setLoggedIn)}
+                >
+                  Sign out
+                </Button>
+              </div>
+            ) : (
+              <div>
+                <GoogleButton
+                  id="google-signin"
+                  onClick={() => signinPopup(setLoggedIn)}
+                />
+              </div>
+            )}
             <Row>
-              <Col xs={{ span: 24 }} lg={{ span: 12 }} style={colStyle}>
+              <Col
+                xs={{ span: 24 }}
+                lg={{ span: 12 }}
+                style={(colStyle)}
+              >
                 <div className="mainContent">
                   <div id="reviewImageContainer"></div>
                   <div id="reviewTextContainer">
@@ -197,6 +239,8 @@ function App() {
                       id="rating"
                       name="rating"
                       placeholder="9.15"
+                      min={1}
+                      max={10}
                       value={rating}
                       onChange={(event) => setRating(event.target.value)}
                     ></Input>
@@ -220,17 +264,28 @@ function App() {
                               (creator !== "") &
                               (rating !== "")
                             ) {
-                              createReview(
-                                title,
-                                creator,
-                                rating,
-                                medium,
-                                auth.currentUser.displayName
-                              );
-                              setTitle("");
-                              setCreator("");
-                              setRating(0);
-                              window.alert("Review Submitted!");
+                              if (
+                                title.length < 250 &&
+                                creator.length < 250 &&
+                                rating < 10 &&
+                                rating > 1
+                              ) {
+                                createReview(
+                                  title,
+                                  creator,
+                                  rating,
+                                  medium,
+                                  auth.currentUser.displayName
+                                );
+                                setTitle("");
+                                setCreator("");
+                                setRating(0);
+                                window.alert("Review Submitted!");
+                              } else {
+                                window.alert(
+                                  "Invalid entries (title and creator below 250 characters, and rating between 1 and 10)"
+                                );
+                              }
                             } else {
                               window.alert(
                                 "Fill out all information before submitting"
@@ -249,7 +304,11 @@ function App() {
                   </div>
                 </div>
               </Col>
-              <Col xs={{ span: 24 }} lg={{ span: 12 }} style={colStyle}>
+              <Col
+                xs={{ span: 24 }}
+                lg={{ span: 12 }}
+                style={(colStyle)}
+              >
                 <div>
                   <Row>
                     <Col xs={{ span: 24 }} lg={{ span: 12 }}>
@@ -272,7 +331,7 @@ function App() {
                       />
                     </Col>
                   </Row>
-                  <div id="review-col">
+                  <div id="review-col" style={reviewCollectionStyle}>
                     {displayReviews
                       .filter((review) => {
                         if (
@@ -292,7 +351,11 @@ function App() {
                       })
                       .map((review, i) => {
                         return (
-                          <div key={i} className="review-box">
+                          <div
+                            key={i}
+                            className="review-box"
+                            style={reviewItemStyle}
+                          >
                             <h3 key={i} className="legend">
                               {review.title} - {review.rating}
                             </h3>
@@ -300,7 +363,10 @@ function App() {
                               {review.reviewer} - {review.creator} -{" "}
                               {review.medium}
                             </p>
-                            <Progress style={sliderStyle} percent={Math.round(review.rating * 10)} />
+                            <Progress
+                              style={sliderStyle}
+                              percent={(review.rating * 10).toFixed(1)}
+                            />
                           </div>
                         );
                       })}
@@ -308,24 +374,6 @@ function App() {
                 </div>
               </Col>
             </Row>
-            {loggedIn ? (
-              <div>
-                <p style={{ color: colors[0] }}>
-                  <strong>
-                    {auth.currentUser.displayName} - {auth.currentUser.uid}
-                  </strong>
-                </p>
-                <Button onClick={() => signout(setLoggedIn)}>Sign out</Button>
-                <Avatar size={64} icon={<UserOutlined />} />
-              </div>
-            ) : (
-              <div>
-                <GoogleButton
-                  id="google-signin"
-                  onClick={() => signinPopup(setLoggedIn)}
-                />
-              </div>
-            )}
           </Content>
         </Layout>
       </Layout>
