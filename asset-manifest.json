@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/Arsha/static/css/main.0ce6cc89.chunk.css",
-    "main.js": "/Arsha/static/js/main.6ad2817c.chunk.js",
-    "main.js.map": "/Arsha/static/js/main.6ad2817c.chunk.js.map",
+    "main.css": "/Arsha/static/css/main.84c8cd28.chunk.css",
+    "main.js": "/Arsha/static/js/main.fe177c8c.chunk.js",
+    "main.js.map": "/Arsha/static/js/main.fe177c8c.chunk.js.map",
     "runtime-main.js": "/Arsha/static/js/runtime-main.e673fb53.js",
     "runtime-main.js.map": "/Arsha/static/js/runtime-main.e673fb53.js.map",
     "static/css/2.ed1298f3.chunk.css": "/Arsha/static/css/2.ed1298f3.chunk.css",
-    "static/js/2.4d8c41d3.chunk.js": "/Arsha/static/js/2.4d8c41d3.chunk.js",
-    "static/js/2.4d8c41d3.chunk.js.map": "/Arsha/static/js/2.4d8c41d3.chunk.js.map",
+    "static/js/2.b9c1c06a.chunk.js": "/Arsha/static/js/2.b9c1c06a.chunk.js",
+    "static/js/2.b9c1c06a.chunk.js.map": "/Arsha/static/js/2.b9c1c06a.chunk.js.map",
     "index.html": "/Arsha/index.html",
     "static/css/2.ed1298f3.chunk.css.map": "/Arsha/static/css/2.ed1298f3.chunk.css.map",
-    "static/css/main.0ce6cc89.chunk.css.map": "/Arsha/static/css/main.0ce6cc89.chunk.css.map",
-    "static/js/2.4d8c41d3.chunk.js.LICENSE.txt": "/Arsha/static/js/2.4d8c41d3.chunk.js.LICENSE.txt"
+    "static/css/main.84c8cd28.chunk.css.map": "/Arsha/static/css/main.84c8cd28.chunk.css.map",
+    "static/js/2.b9c1c06a.chunk.js.LICENSE.txt": "/Arsha/static/js/2.b9c1c06a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.e673fb53.js",
     "static/css/2.ed1298f3.chunk.css",
-    "static/js/2.4d8c41d3.chunk.js",
-    "static/css/main.0ce6cc89.chunk.css",
-    "static/js/main.6ad2817c.chunk.js"
+    "static/js/2.b9c1c06a.chunk.js",
+    "static/css/main.84c8cd28.chunk.css",
+    "static/js/main.fe177c8c.chunk.js"
   ]
 }
